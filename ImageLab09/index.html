@@ -5,7 +5,7 @@
      <script src="https://unpkg.com/aframe-environment-component/dist/aframe-environment-component.min.js"></script>
   </head>
   <body>
-    <a-scene id="mainScene">
+    <a-scene id="mainScene" light="defaultLightsEnabled: false" fog="type: linear; color: #1e2529; near: 10; far: 100">
       <a-sphere position="0 1.25 -20" radius="2" color="#E8E8E8"></a-sphere>
       <a-sphere position="0 3.5 -20" radius="1.5" color="#e8e8e8"></a-sphere>
       <a-sphere position="0 5.2 -20" radius="1.1" color="#e8e8e8"></a-sphere>
@@ -24,19 +24,47 @@
 
       
       <a-plane color="white" position="0 -.7 0" rotation="-90 0 0" width="300" height="300"></a-plane>
-      
-
-      <a-sky color="#b9c4c9"></a-sky>
+      <a-light type="ambient" color="#1e2529"></a-light>
+      <a-light type="point", position="0 10 -15" color="white" decay=".75" intensity=".2" castShadow="true"></a-light>
+      <a-sky color="#1e2529"></a-sky>
 
       <script>
+        function randomRange(min, max) {
+          return (Math.random() * (max-min)) + min;
+        }
+
         const scene = document.getElementById("mainScene");
+        const treeNumber = 100;
+        const minRadius = 25;
+        const maxRadius = 100;
+        const minSize = 1;
+        const maxSize = 2;
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < treeNumber; i++) {
+          const distance = randomRange(minRadius, maxRadius);
+          const Size = randomRange(minSize, maxSize) * distance/30;
+
           const trunk = document.createElement("a-cone");
-          trunk.setAttribute("color", "red");
-          trunk.setAttribute("position", i+ " 0 0")
+          trunk.setAttribute("color", "#4d413f");
+          trunk.setAttribute("radius-bottom", .75 * Size)
+          trunk.setAttribute("height", 10 * Size);
 
-          scene.appendChild(trunk)
+          
+          //console.log(randomRange(minSize, maxSize));
+          const seed = Math.random() * Math.PI * 2;
+
+          const xPos = Math.cos(seed) * distance;
+          const yPos = Math.sin(seed) * distance;
+
+          trunk.setAttribute("position", xPos + " " + "0" + " " + yPos);
+          scene.appendChild(trunk);
+
+          const leaves = document.createElement("a-cone");
+          leaves.setAttribute("color", "white");
+          leaves.setAttribute("radius-bottom", 2 * Size)
+          leaves.setAttribute("height", 10 * Size)
+          leaves.setAttribute("position", xPos + " " + randomRange(5,8) * Size + " " + yPos);
+          scene.appendChild(leaves);
         }
       </script>
     </a-scene>
