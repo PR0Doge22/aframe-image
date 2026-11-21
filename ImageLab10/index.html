@@ -4,12 +4,36 @@
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"> </script>
   </head>
   <body>
-    <a-scene>
-      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-      <a-sky color="#ECECEC"></a-sky>
+    
+
+    <a-scene id="mainScene" fog="type: linear; color: #9fb9b8; near: 15; far: 250">
+      
+      <a-cylinder repeat="5 40" src="../assets/Textures/sand.png" position="-50 -175 -200" radius="5" height="400"></a-cylinder>
+      <a-cone repeat="5 5" src="../assets/Textures/sand.png" position="-50 30 -200" radius-bottom="7" height="10"></a-cone>
+
+      <a-sky src ="../assets/Skyboxes/NewSky.png" material="fog: false"></a-sky>
+
+      <script>
+        const scene = document.getElementById("mainScene");
+        //fog="type: linear; color: #cfe0f5; near: 15; far: 80"
+        for (let x = -10; x<10; x++){
+          for (let y = -10; y<10; y++){
+               const iceCream = document.createElement("a-sphere");
+               iceCream.setAttribute("radius", 3)
+               iceCream.setAttribute("position", x*30 + " " + "-40" + " " + y*30);
+               iceCream.setAttribute("src", "../assets/Textures/icecreamTexture.jpg");
+               scene.appendChild(iceCream);
+
+               const cone = document.createElement("a-cone");
+               cone.setAttribute("radius-bottom", 2)
+               cone.setAttribute("height", 8)
+               cone.setAttribute("rotation", "0 0 180")
+               cone.setAttribute("position", x*30 + " " + "-46" + " " + y*30);
+               cone.setAttribute("src", "../assets/Textures/cone.jpg");
+               scene.appendChild(cone);
+          }
+        }
+      </script>
     </a-scene>
   </body>
 </html>
