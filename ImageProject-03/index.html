@@ -4,12 +4,87 @@
     <script src="https://aframe.io/releases/1.7.1/aframe.min.js"> </script>
   </head>
   <body>
-    <a-scene>
-      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-      <a-sky color="#ECECEC"></a-sky>
+    <a-scene id="mainScene" fog="type: linear; color: #131624; near: 15; far: 80">
+      
+      <!-- <a-plane src = "../assets/Textures/WakeNew.png" position="0 0 -4" rotation="-90 0 0" width="4" height="4" material="transparent: true; opacity: 1"></a-plane> -->
+
+      <a-assets>
+        <a-asset-item id="fish1" src="../assets/Models/fish.obj"></a-asset-item>
+        <a-asset-item id="fish2" src="../assets/Models/fish2.obj"></a-asset-item>
+      </a-assets>
+
+
+      <a-obj-model src="#fish1" position="10 5 -40" scale="1 1 1" rotation = "0 -90 0" color="#83b0a7"></a-obj-model>
+      <a-obj-model src="#fish1" position="13 4 -39" scale=".7 .7 .7" rotation = "0 -90 0" color="#83b0a7"></a-obj-model>
+
+      <a-obj-model src="#fish2" position="-10 7 -40" scale=".5 .5 .5" rotation = "0 90 0" color="#d8d981"></a-obj-model>
+      <a-obj-model src="#fish2" position="-8 6 -38" scale=".2 .2 .2" rotation = "0 90 0" color="#d8d981"></a-obj-model>
+      <a-obj-model src="#fish2" position="-12 5 -41" scale=".15 .15 .15" rotation = "0 90 0" color="#d8d981"></a-obj-model>
+
+      <a-box height = "15" width = "40" depth="20" position="0 7.5 -40" src="../assets/Textures/glass.jpg" material="transparent: true; opacity: 0.2; alphaTest: 0.01; depthWrite: false"></a-box>
+      <a-box height = ".5" width = "41" depth="21" position="0 .25 -40" color="#3f3f45"></a-box>
+      <a-box repeat="10 10" height = ".6" width = "39" depth="19" position="0 .35 -40" src = "../assets/Textures/sand.png" color="#7070c3"></a-box>
+
+      <a-light type="ambient" color="#5c5469"></a-light>
+      <a-light type="point", position="0 10 -40" color="#4590ff" decay="0" intensity="2" castShadow="true"></a-light>
+      <a-light type="point", position="15 10 -40" color="#4590ff" decay="0" intensity="2" castShadow="true"></a-light>
+      <a-light type="point", position="-15 10 -40" color="#4590ff" decay="0" intensity="2" castShadow="true"></a-light>
+      <!-- <a-light type="directional", position="0 10 0" color="#4590ff" decay=".5" intensity="2" castShadow="true"></a-light> -->
+
+      <!-- bottom corner = (-20 0 -50) top corner = (20 15 -30)-->
+
+      <a-sky src="../assets/Skyboxes/aquaSkyFogDark.png" material="fog: false"></a-sky>
+      
     </a-scene>
+    
+    <script>
+        function randomRange(min, max) {
+          return (Math.random() * (max-min)) + min;
+        }
+
+        const scene = document.getElementById("mainScene");
+        const coralCount = 6
+        const seaGrassCount = 4
+
+        for (let i = 0; i < coralCount; i++) {
+          
+          const Size = randomRange(3, 9)
+          const posX = randomRange(-(20 - Size/2), 20-Size/2)
+          const posZ = randomRange(-(50- Size/2), -30-Size/2)
+          
+          const coralType = Math.floor(randomRange(1, 5));
+
+          for (let i = 0; i < 8; i++) {
+            const leaf = document.createElement("a-plane");
+            leaf.setAttribute("width", Size);
+            leaf.setAttribute("height", Size);
+            leaf.setAttribute("material", "transparent: true; alphaTest: 0.01");
+            leaf.setAttribute("src", "../assets/Textures/coral" + coralType + ".png")
+            leaf.setAttribute("position", posX + " 1 " + posZ);
+            leaf.setAttribute("rotation", randomRange(-20,20) + " " + randomRange(0,360) + " " + randomRange(-20,20));
+            scene.appendChild(leaf);
+          }
+        }
+
+        for (let i = 0; i < seaGrassCount; i++) {
+          
+          const Size = randomRange(4, 17)
+
+          const posX = randomRange(-18, 18)
+          const posZ = randomRange(-48, -32)
+          
+
+          for (let i = 0; i < 8; i++) {
+            const leaf = document.createElement("a-plane");
+            leaf.setAttribute("width", randomRange(2,4));
+            leaf.setAttribute("height", Size);
+            leaf.setAttribute("material", "transparent: true; alphaTest: 0.01");
+            leaf.setAttribute("src", "../assets/Textures/seaVine.png")
+            leaf.setAttribute("position", posX + " " + Size/2 + " " + posZ);
+            leaf.setAttribute("rotation", 0 + " " + randomRange(0,360) + " " + 0);
+            scene.appendChild(leaf);
+          }
+        }
+      </script>
   </body>
 </html>
